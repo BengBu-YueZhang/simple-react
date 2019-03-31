@@ -14,7 +14,7 @@ export function diffChildren (
 
   let oldChildren = oldParentVNode && oldParentVNode._children || []
 
-  let oldChildrenLength = oldChildren.length
+  oldChildrenLength = oldChildren.length
 
   for (i = 0; i < newChildren.length; i++) {
     newVNode = newChildren[i]

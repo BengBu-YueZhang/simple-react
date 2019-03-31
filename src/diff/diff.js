@@ -32,7 +32,21 @@ export function diff (
   return dom
 }
 
+// It hasn't been implemented yet
 export function diffElementNodes (dom, newVNode, oldVNode) {
+  let d = dom
+
+  if (!dom) {
+    dom = newVNode.type === null ? document.createTextNode(newVNode.text) : document.createElement(newVNode.type)
+  }
+
+  newVNode._dom = dom
+
+  if (newVNode.type) {
+  } else {
+    if (newVNode !== oldVNode) {
+    }
+  }
 }
 
 export function runDidMount () {
