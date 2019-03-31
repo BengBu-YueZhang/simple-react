@@ -1,2 +1,3 @@
-export function diffChildren () {
+export function diffChildren (
+) {
 }
