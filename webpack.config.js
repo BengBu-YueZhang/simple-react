@@ -11,7 +11,7 @@ module.exports = {
   target: 'web',
 
   entry: {
-    main: path.resolve(__dirname, './index.js')
+    main: path.resolve(__dirname, './example/index.js')
   },
 
   devServer: {
@@ -56,14 +56,19 @@ module.exports = {
           options: {
             presets: ['@babel/preset-env'],
             plugins: [
-              '@babel/plugin-syntax-dynamic-import'
+              '@babel/plugin-syntax-dynamic-import',
+              [
+                "@babel/plugin-transform-react-jsx",
+                {
+                  pragma: 'h'
+                }
+              ]
             ]
           }
         }
       ]
     }),
     new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, './dist/index.html'),
       template: path.resolve(__dirname, './public/index.html')
     })
   ]
