@@ -5,6 +5,9 @@ export function render (vnode, root) {
   let newVNode = root._prevVNode = vnode
   let dom = oldVNode ? oldVNode._dom : null
   let mounts = []
-  diff(dom, root, newVNode, oldVNode, mounts)
+  let newDom = diff(dom, root, newVNode, oldVNode, mounts)
+  if (newDom) {
+    root.appendChild(newDom)
+  }
   runDidMount(mounts, vnode)
 }
