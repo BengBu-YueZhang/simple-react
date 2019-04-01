@@ -14,13 +14,13 @@ export function diffChildren (
 
   let oldChildren = oldParentVNode && oldParentVNode._children || []
 
-  oldChildrenLength = oldChildren.length
+  // oldChildrenLength = oldChildren.length
 
   for (i = 0; i < newChildren.length; i++) {
     newVNode = newChildren[i]
     oldVNode = index = null
 
-    // reuse dom
+    // // Todo: reuse dom
     // p = oldChildren[i]
     // if (
     //   p != null &&
