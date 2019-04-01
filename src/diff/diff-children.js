@@ -1,4 +1,5 @@
 import { diff } from './diff'
+import { coerceToVNode } from '../create-element'
 
 // It hasn't been implemented yet
 export function diffChildren (
@@ -69,7 +70,7 @@ export function toChildVNodeArray (children, flat = []) {
       toChildVNodeArray(children[i], flat)
     }
   } else {
-    flat.push(children)
+    flat.push(coerceToVNode(children))
   }
   return flat
 }

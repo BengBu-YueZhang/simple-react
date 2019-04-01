@@ -23,3 +23,17 @@ export function createVNode (type, props, text, key) {
 
   return VNode
 }
+
+export function coerceToVNode (vnode) {
+  if (vnode == null || typeof vnode === 'boolean') return null
+
+	if (typeof vnode === 'string' || typeof vnode === 'number') {
+		return createVNode(null, null, vnode, null)
+  }
+  
+	if (vnode._dom != null) {
+		return createVNode(vnode.type, vnode.props, vnode.text, vnode.key)
+	}
+
+	return vnode
+}

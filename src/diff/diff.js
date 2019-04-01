@@ -30,7 +30,7 @@ export function diff (
   }
 
   newVNode._dom = dom
-  console.log(dom)
+  console.log('返回的dom:', dom)
   return dom
 }
 

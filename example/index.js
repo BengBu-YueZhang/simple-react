@@ -1,3 +1,6 @@
-import { h } from '../src'
+import { h, render } from '../src'
 
-console.log(<h1 id="test">hello world</h1>)
+render(
+  <h1 id="test">hello world</h1>,
+  document.getElementById('app')
+)
