@@ -20,11 +20,10 @@ export function diffProps (dom, newProps, oldProps) {
 
 export function setProperty (dom, name, value, oldValue) {
   if (name === 'style') {
+    let s = dom.style
     if (typeof value === 'string') {
 			s.cssText = value
 		} else {
-      let s = dom.style
-
 			if (typeof oldValue === 'string') {
         s.cssText = ''
       } else {

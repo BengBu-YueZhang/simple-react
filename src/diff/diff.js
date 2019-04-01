@@ -46,7 +46,7 @@ export function diffElementNodes (dom, newVNode, oldVNode, mounts) {
   if (newVNode.type) {
     if (newVNode !== oldVNode) {
       let newProps = newVNode.props
-      let oldProps = newVNode.props
+      let oldProps = oldVNode.props
       if (!oldProps) {
         oldProps = {}
       }
