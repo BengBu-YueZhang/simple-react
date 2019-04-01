@@ -1,5 +1,4 @@
-import { diffChildren } from './diff/diff-children'
-import { runDidMount } from './diff/diff'
+import { runDidMount, diff } from './diff/diff'
 
 export function render (vnode, root) {
   let oldVNode = root._prevVNode
