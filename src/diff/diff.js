@@ -1,5 +1,6 @@
 import { diffChildren } from './diff-children'
 import { diffProps } from './diff-props'
+import { coerceToVNode } from '../create-element'
 
 // It hasn't been implemented yet
 export function diff (
@@ -10,6 +11,10 @@ export function diff (
   mounts,
   force
 ) {
+
+  let isNew = false
+  let c, oldState, oldProps, p, snapshot
+
   if (oldVNode == null || newVNode == null || newVNode.type !== oldVNode.type) {
     if (!newVNode) return null
     dom = null
@@ -19,7 +24,56 @@ export function diff (
   let newType = newVNode.type
 
   if (typeof newType === 'function') {
-    // render component
+
+    if (oldVNode._component) {
+
+    } else {
+      isNew = true
+
+      if (newType.prototype && newType.prototype.render) {
+        newVNode._component = c = new newType(newVNode.props)
+      } else {
+        throw Error('The render function is required')
+      }
+
+      c.props = newVNode.props
+      c._dirty = true
+      c._renderCallbacks = []
+    }
+
+    c._vnode = newVNode
+
+    let s = c._nextState || c.state
+
+    if (newType.getDerivedStateFromProps) {
+    }
+
+    if (isNew) {
+      if (newType.componentWillMount) {
+      }
+      if (newType.componentDidMount) {
+        mounts.push(c)
+      }
+    } else {
+    }
+
+    oldProps = c.props
+
+		if (!oldState) {
+      oldState = c.state
+    }
+    c.props = newVNode.props
+    c.state = s
+    
+    let prev = c._prevVNode
+    let vnode = c._prevVNode = coerceToVNode(c.render(c.props, c.state))
+    c._dirty = false
+
+    if (!isNew && c.getSnapshotBeforeUpdate!=null) {
+    }
+
+    // c.base = dom = diff(dom, parentDom, vnode, prev, context, isSvg, excessDomChildren, mounts, c, null);
+
   } else {
     dom = diffElementNodes(
       dom,
@@ -30,6 +84,15 @@ export function diff (
   }
 
   newVNode._dom = dom
+
+  if (c!=null) {
+    while (p = c._renderCallbacks.pop()) {
+      p.call(c)
+    }
+
+    if (!isNew && oldProps && c.componentDidUpdate) {
+    }
+  }
 
   return dom
 }

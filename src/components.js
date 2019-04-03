@@ -9,16 +9,20 @@ export class Component {
 
   setState (update, callback) {
     let s
-    if (this._nextState !== this.state) {
+
+    if (this._nextState && this._nextState !== this.state) {
       s = this._nextState
     } else {
       s = this._nextState = assign({}, this.state)
     }
 
-    if (update) {
+    if (typeof update === 'function') {
+      update = update(s, this.props)
+      assign(s, update)
+    } else {
       assign(s, update)
     }
-
+    
     if (this._vnode) {
       if (callback) {
         this._renderCallbacks.push(callback)
