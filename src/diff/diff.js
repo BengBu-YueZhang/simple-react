@@ -72,7 +72,13 @@ export function diff (
     if (!isNew && c.getSnapshotBeforeUpdate!=null) {
     }
 
-    // c.base = dom = diff(dom, parentDom, vnode, prev, context, isSvg, excessDomChildren, mounts, c, null);
+    c.base = dom = diff(
+      dom,
+      root,
+      vnode,
+      prev,
+      mounts
+    )
 
   } else {
     dom = diffElementNodes(
