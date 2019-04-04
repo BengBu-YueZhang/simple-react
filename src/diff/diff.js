@@ -2,6 +2,7 @@ import { diffChildren } from './diff-children'
 import { diffProps } from './diff-props'
 import { coerceToVNode } from '../create-element'
 import { assign } from '../util'
+import { Component } from '../components'
 
 // It hasn't been implemented yet
 export function diff (
@@ -33,7 +34,11 @@ export function diff (
       if (newType.prototype && newType.prototype.render) {
         newVNode._component = c = new newType(newVNode.props)
       } else {
-        throw Error('The render function is required')
+        newVNode._component = c = new Component(newVNode.props)
+        c.constructor = newType
+        c.render = function (props) {
+          return this.constructor(props)
+        }
       }
       c.props = newVNode.props
       c._dirty = true
@@ -58,6 +63,10 @@ export function diff (
         mounts.push(c)
       }
     } else {
+      if (c.componentWillReceiveProps) {
+      }
+      if (c.shouldComponentUpdate) {
+      }
     }
 
     oldProps = c.props

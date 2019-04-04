@@ -27,6 +27,9 @@ export class Component {
       if (callback) {
         this._renderCallbacks.push(callback)
       }
+      /** 临时方案 start */
+      assign(this.state, s)
+      /** 临时方案 end */
     }
   }
 
