@@ -64,6 +64,8 @@ export function diff (
       }
     } else {
       if (c.componentWillReceiveProps) {
+        c.componentWillReceiveProps(newVNode.props)
+        s = c._nextState || c.state
       }
       if (c.shouldComponentUpdate) {
       }
@@ -82,6 +84,7 @@ export function diff (
     c._dirty = false
 
     if (!isNew && c.getSnapshotBeforeUpdate!=null) {
+      snapshot = c.getSnapshotBeforeUpdate(oldProps, oldState)
     }
 
     c.base = dom = diff(
@@ -108,6 +111,7 @@ export function diff (
     }
 
     if (!isNew && oldProps && c.componentDidUpdate) {
+      c.componentDidUpdate(oldProps, oldState, snapshot)
     }
   }
 
