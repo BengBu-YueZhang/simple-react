@@ -40,6 +40,14 @@ export function setProperty (dom, name, value, oldValue) {
 				}
 			}
 		}
+  } else if (name[0]==='o' && name[1]==='n') {
+    name = name.toLowerCase()
+    name = name.substring(2)
+    if (value) {
+      dom.addEventListener(name, value)
+    } else {
+      dom.removeEventListener(name, value)
+    }
   } else if (value == null) {
     dom.removeAttribute(name)
   } else if (typeof value !== 'function') {
