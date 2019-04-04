@@ -28,7 +28,7 @@ export function diff (
   if (typeof newType === 'function') {
 
     if (oldVNode._component) {
-
+      c = newVNode._component = oldVNode._component
     } else {
       isNew = true
       if (newType.prototype && newType.prototype.render) {
@@ -44,7 +44,7 @@ export function diff (
       c._dirty = true
       c._renderCallbacks = []
     }
-
+    
     c._vnode = newVNode
     
     let s = c._nextState || c.state
@@ -94,6 +94,9 @@ export function diff (
       prev,
       mounts
     )
+    
+    c._root = root
+
   } else {
     dom = diffElementNodes(
       dom,

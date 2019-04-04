@@ -29,6 +29,11 @@ export class Component {
       }
       /** 临时方案 start */
       assign(this.state, s)
+      let mounts = []
+      let root = this._root
+      let vnode = this._vnode
+      let dom = this._vnode._dom
+      diff(root, dom, vnode, vnode, mounts)
       /** 临时方案 end */
     }
   }
