@@ -1,4 +1,5 @@
 import { anyToVNode } from './create-element'
+import { Component } from './component'
 
 export function diff (dom, parentDom, newVNode, oldVNode, mounts) {
   if (oldVNode==null || newVNode==null || oldVNode.type!==newVNode.type) {
@@ -12,12 +13,71 @@ export function diff (dom, parentDom, newVNode, oldVNode, mounts) {
 		oldVNode = {}
   }
   
-  let c, p, oldProps, oldState, isNew = false, newType = newVNode.type
+  let c, isNew = false, newType = newVNode.type, oldProps, oldState
 
   if (typeof newType === 'function') {
+    if (oldVNode._component) {
+      c = newVNode._component = oldVNode._component
+    } else {
+      if (newType.prototype && newType.prototype.render) {
+        newVNode._component = c = new newType(newVNode.props)
+      }
+      else {
+        newVNode._component = c = new Component(newVNode.props)
+        c.constructor = newType
+        c.render = doRender
+      }
+    }
+
+    c.props = newVNode.props
+    isNew = c._dirty = true
+
+    c._vnode = newVNode;
+
+    let s = c._nextState || c.state;
+
+    if (isNew) {
+      if (c.componentWillMount != null) {
+        c.componentWillMount()
+        s = c._nextState || c.state
+      }
+      if (c.componentDidMount != null) {
+        mounts.push(c)
+      }
+    }
+    else {
+      if (c.componentWillReceiveProps != null) {
+        c.componentWillReceiveProps(newVNode.props)
+        s = c._nextState || c.state
+      }
+
+      if (c.componentWillUpdate != null) {
+        c.componentWillUpdate(newVNode.props, s);
+      }
+    }
+
+    oldProps = c.props;
+		if (!oldState) oldState = c.state;
+
+    c.props = newVNode.props
+    c.state = s
+
+    let prev = c._prevVNode;
+    let vnode = c._prevVNode = anyToVNode(c.render(c.props, c.state, c.context))
+    c._dirty = false
+
+    c.base = dom = diff(dom, parentDom, vnode, prev, mounts)
+
+    c._parentDom = parentDom
 
   } else {
     dom = diffElement(dom, newVNode, oldVNode, mounts)
+  }
+
+  if (c!=null) {
+    if (!isNew && oldProps!=null && c.componentDidUpdate!=null) {
+      c.componentDidUpdate(oldProps, oldState)
+    }
   }
 
   newVNode._dom = dom
@@ -185,5 +245,39 @@ export function runDidMount (mounts) {
   }
 }
 
-export function unmount () {
+export function unmount (vnode, skipRemove) {
+  let r
+
+  let dom
+  
+	if (!skipRemove) {
+		skipRemove = (dom = vnode._dom)!=null
+	}
+
+	vnode._dom = null
+
+	if ((r = vnode._component)!=null) {
+		if (r.componentWillUnmount) {
+			r.componentWillUnmount()
+		}
+
+		r.base = r._parentDom = null;
+		if (r = r._prevVNode) unmount(r, skipRemove)
+	} else if (r = vnode._children) {
+		for (let i = 0; i < r.length; i++) {
+			unmount(r[i], skipRemove)
+		}
+	}
+
+	if (dom!=null) removeNode(dom)
+}
+
+
+function removeNode(node) {
+	let parentNode = node.parentNode;
+	if (parentNode) parentNode.removeChild(node);
+}
+
+function doRender(props, state, context) {
+	return this.constructor(props, context)
 }
