@@ -96,7 +96,7 @@ export function setProperty (dom, key, value, oldValue) {
 }
 
 export function diffChildren (parentDom, newParentVNode, oldParentVNode, mounts) {
-  let childDom, i, oldVNode, index, p, j
+  let childDom, i, oldVNode, index, p, j, childVNode, nextDom, newDom
 
   let newChildren = newParentVNode._children || toChildArray(newParentVNode.props.children, newParentVNode._children = [])
   let oldChildren = oldParentVNode && oldParentVNode._children ? oldParentVNode._children : []
