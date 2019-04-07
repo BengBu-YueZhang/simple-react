@@ -1,28 +1,18 @@
-## yy-react
+## very-simple-react
 
-我叫张越, 所以项目名为yy(越越)-react。源码主要是我在学习preact的源码后, 参考preact源码实现的。实现了JSX，组件，生命周期，diff，setState等核心功能。代码中有完善的中文注释, 对于了解虚拟DOM, diff算法, 还是有很大的帮助的。
+very-simple-react。源码主要是我在学习preact的源码后, 参考(抄🤦‍)preact源码实现的。
+
+如果说preact是react的精简的实现，那我这个就是preact精简实现。
+
+虽然不能用于生产环境，但是对于学习了解react原理还是有一定帮助的。代码实现了JSX，组件，生命周期，diff，setState等核心功能。
 
 ```js
 
-git clone https://github.com/BengBu-YueZhang/yy-react.git
+git clone https://github.com/BengBu-YueZhang/very-simple-react.git
 
 npm install
 
 npm start
 ```
 
-```js
-
-|____example
-| |____index.js
-|____src
-| |____util.js
-| |____create-element.js
-| |____render.js
-| |____index.js
-| |____diff
-| | |____diff-children.js
-| | |____diff-props.js
-| | |____diff.js
-| |____components.js
-```
+推荐看下我的博客: [preact源码解析](https://juejin.im/post/5ca97d60f265da24d5070613) 
