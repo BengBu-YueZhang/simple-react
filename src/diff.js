@@ -26,7 +26,6 @@ export function diff (dom, parentDom, newVNode, oldVNode, mounts) {
 }
 
 export function diffElement (dom, newVNode, oldVNode, mounts) {
-
   let d = dom
 
   if (!dom) {
@@ -51,6 +50,8 @@ export function diffElement (dom, newVNode, oldVNode, mounts) {
       diffProps(dom, newProps, oldProps)
     }
   }
+
+  return dom
 }
 
 export function diffProps (dom, newProps, oldProps) {
@@ -58,7 +59,7 @@ export function diffProps (dom, newProps, oldProps) {
     if (
       k !== 'children' &&
       k !== 'key' &&
-      oldProps[k] !== newProps[key]
+      oldProps[k] !== newProps[k]
     ) {
       setProperty(dom, k, newProps[k], oldProps[k])
     }
