@@ -1,33 +1,59 @@
 import { h, render, Component } from '../src'
 
+class ListItem extends Component {
+  render () {
+    const { value = '默认' } = this.props
+    return (
+      <div>{ value }</div>
+    )
+  }
+}
+
 class HelloWorld extends Component {
 
   constructor (props) {
     super(props)
     this.state = {
-      msg1: 'msg1',
-      msg2: 'msg2'
+      list: [
+        {
+          value: '1'
+        }
+      ]
     }
   }
 
-  componentWillMount () {
+  handleAdd () {
+    let list = this.state.list
+    list.push({
+      value: list.length + 1
+    })
     this.setState({
-      msg1: 'componentWillMount change'
+      list
     })
   }
 
-  handleClick () {
+  handleSubtract () {
+    let list = this.state.list
+    list.length = list.length - 1
     this.setState({
-      msg2: 'handleClick'
+      list
     })
   }
 
   render () {
     return (
       <div>
-        <h1 id="title" style="color: red">{ this.state.msg1 }</h1>
-        <h1 id="title" style="color: blue">{ this.state.msg2 }</h1>
-        <button onClick={this.handleClick.bind(this)}>点击</button>
+        <button onClick={this.handleAdd.bind(this)}>+</button>
+        <button onClick={this.handleSubtract.bind(this)}>-</button>
+        <div>
+          {
+            this.state.list && this.state.list.map(item => {
+              return (
+                <ListItem value={item.value}/>
+              )
+            })
+          }
+        </div>
       </div>
     )
   }

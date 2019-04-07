@@ -16,6 +16,7 @@ export function diff (dom, parentDom, newVNode, oldVNode, mounts) {
   let c, isNew = false, newType = newVNode.type, oldProps, oldState
 
   if (typeof newType === 'function') {
+
     if (oldVNode._component) {
       c = newVNode._component = oldVNode._component
     } else {
@@ -52,17 +53,17 @@ export function diff (dom, parentDom, newVNode, oldVNode, mounts) {
       }
 
       if (c.componentWillUpdate != null) {
-        c.componentWillUpdate(newVNode.props, s);
+        c.componentWillUpdate(newVNode.props, s)
       }
     }
 
-    oldProps = c.props;
-		if (!oldState) oldState = c.state;
+    oldProps = c.props
+		if (!oldState) oldState = c.state
 
     c.props = newVNode.props
     c.state = s
 
-    let prev = c._prevVNode;
+    let prev = c._prevVNode
     let vnode = c._prevVNode = anyToVNode(c.render(c.props, c.state, c.context))
     c._dirty = false
 
